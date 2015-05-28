@@ -1,17 +1,13 @@
-(ns gilded_rose.core-test
+(ns gilded-rose.core-test
   (:use midje.sweet)
-  (:use [gilded_rose.core]))
+  (:require [gilded-rose.core :use [item update-quality]]))
 
-(println "You should expect to see three failures below.")
+(fact "a normal item is normal"
+      (let [inventory [(item "something" 2 2)]
+        result (update-quality inventory)
+        updated-item (first result)]
+        (fact "sell-in decreases"
+              (:sell-in updated-item) => 1)
+        (fact "quality decreases"
+              (:quality updated-item) => 1)))
 
-(facts "about `first-element`"
-  (fact "it normally returns the first element"
-    (first-element [1 2 3] :default) => 1
-    (first-element '(1 2 3) :default) => 1)
-
-  ;; I'm a little unsure how Clojure types map onto the Lisp I'm used to.
-  (fact "default value is returned for empty sequences"
-    (first-element [] :default) => :default
-    (first-element '() :default) => :default
-    (first-element nil :default) => :default
-    (first-element (filter even? [1 3 5]) :default) => :default))
