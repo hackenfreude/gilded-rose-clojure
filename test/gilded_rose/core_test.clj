@@ -3,6 +3,7 @@
   (:require [gilded-rose.core :use [item update-quality]]))
 
 (def sulfuras-name "Sulfuras, Hand of Ragnaros")
+(def passes-name "Backstage passes to a TAFKAL80ETC concert")
 
 (defn single-item-runner [single-item]
   (let [inventory [single-item]
@@ -39,6 +40,32 @@
               (:sell-in result) => 0)
         (fact "quality stays the same"
               (:quality result) => 80)))
+
+(fact "aged brie quality increases"
+      (let [cheese (item "Aged Brie" 0 0)
+            result (single-item-runner cheese)]
+        (:quality result) => 1))
+
+(fact "backstage passes "
+      (let [passes11 (item passes-name 11 0)
+            passes10 (item passes-name 10 0)
+            passes6 (item passes-name 6 0)
+            passes5 (item passes-name 5 0)
+            passes1 (item passes-name 1 0)
+            passes0 (item passes-name 0 0)]
+          (fact "passes with 11 days quality up by 1"
+              (:quality (single-item-runner passes11)) => 1)
+          (fact "passes with 10 days quality up by 2"
+              (:quality (single-item-runner passes10)) => 2)
+          (fact "passes with 6 days quality up by 2"
+              (:quality (single-item-runner passes6)) => 2)
+          (fact "passes with 5 days quality up by 3"
+              (:quality (single-item-runner passes5)) => 3)
+          (fact "passes with 1 days quality up by 3"
+              (:quality (single-item-runner passes1)) => 3)
+          (fact "passes with 0 days quality stays 0"
+              (:quality (single-item-runner passes0)) => 0)))
+            
 
 
 
