@@ -86,6 +86,14 @@
         (fact "quality decrements by 1"
               (:quality result) => 9)))
 
+(fact "a normal item "
+      (let [test-item (item "foobar" 10 10)
+            result (single-item-runner test-item)]
+        (fact "sell-in decrements by 1"
+              (:sell-in result) => 9)
+        (fact "quality decrements by 1"
+              (:quality result) => 9)))
+
 (fact "quality never above 50 except for sulfuras"
       (let [inventory (make-uniform-inventory 0 50)
             non-sulf-inv (remove (fn [x] (= (:name x) sulfuras-name)) inventory)
