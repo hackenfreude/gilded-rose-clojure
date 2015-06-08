@@ -5,6 +5,8 @@
 (def sulfuras-name "Sulfuras, Hand of Ragnaros")
 (def passes-name "Backstage passes to a TAFKAL80ETC concert")
 (def cheese-name "Aged Brie")
+(def normal1-name "+5 Dexterity Vest")
+(def normal2-name "Elixir of the Mongoose")
 
 (defn single-item-runner [single-item]
   (let [inventory [single-item]
@@ -12,18 +14,19 @@
         (first result)))
 
 (defn make-uniform-inventory [sell-in quality]
-  (let [normal (item "normal" sell-in quality)
+  (let [normal1 (item normal1-name sell-in quality)
+        normal2 (item normal2-name sell-in quality)
         cheese (item cheese-name sell-in quality)
         sulfur (item sulfuras-name sell-in quality)
         passes (item passes-name sell-in quality)]
-    [normal cheese sulfur passes]))
+    [normal1 normal2 cheese sulfur passes]))
 
 (fact "quality doesn't go negative"
       (let [inventory (make-uniform-inventory 0 0)
             result (update-quality inventory)
             qualities (map :quality result)]
         qualities => (has not-any? neg?)
-        (count qualities) => 4))
+        (count qualities) => 5))
 
 (fact "sell-in decreases each day except sulfuras"
       (let [inventory (make-uniform-inventory 1 1)
@@ -31,7 +34,7 @@
             result (update-quality non-sulf-inv)
             sellins (map :sell-in result)]
         sellins => (has every? zero?)
-        (count sellins) => 3))
+        (count sellins) => 4))
 
 (fact "sulfuras "
       (let [sulfuras (item sulfuras-name 0 80)
@@ -67,7 +70,15 @@
               (:quality (single-item-runner passes0)) => 0)))
             
 (fact "a normal item "
-      (let [test-item (item "normal" 10 10)
+      (let [test-item (item normal1-name 10 10)
+            result (single-item-runner test-item)]
+        (fact "sell-in decrements by 1"
+              (:sell-in result) => 9)
+        (fact "quality decrements by 1"
+              (:quality result) => 9)))
+
+(fact "a normal item "
+      (let [test-item (item normal2-name 10 10)
             result (single-item-runner test-item)]
         (fact "sell-in decrements by 1"
               (:sell-in result) => 9)
@@ -80,4 +91,4 @@
             result (update-quality non-sulf-inv)
             qualities (map :quality result)]
         qualities => (has every? (fn [x] (>= 50 x)))
-        (count qualities) => 3))
+        (count qualities) => 4))
