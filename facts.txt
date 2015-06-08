@@ -1,0 +1,18 @@
+at the end of each day, sell-in and quality both decrease by 1
+once sell-in passes (zero?), quality degrades 2x (by 2 rather than 1)
+quality is never negative
+Aged Brie quality goes up rather than down
+Sulfuras never has to be sold (what does this mean for sell-in?) and quality never decreases (stays 80)
+Backstage passes increase in quality: 10 >= days > 5 ... quality increases by 2; 5 >= days > 0.. increases by 3
+nothing has a quality above 50
+
+
+TEST CASES:
+1. quality is never negative
+2. sell-in decreases each day (except sulfuras)
+3. quality decreases each day, but by complicated ways
+	3a. aged brie is different.. goes up
+	3b. sulfuras stays the same
+	3c. backstage passes do weird things
+4. quality never above 50
+
