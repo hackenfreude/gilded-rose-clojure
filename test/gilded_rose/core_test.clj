@@ -18,15 +18,16 @@
         normal2 (item normal2-name sell-in quality)
         cheese (item cheese-name sell-in quality)
         sulfur (item sulfuras-name sell-in quality)
-        passes (item passes-name sell-in quality)]
-    [normal1 normal2 cheese sulfur passes]))
+        passes (item passes-name sell-in quality)
+        surprise (item "foobar" sell-in quality)]
+    [normal1 normal2 cheese sulfur passes surprise]))
 
 (fact "quality doesn't go negative"
       (let [inventory (make-uniform-inventory 0 0)
             result (update-quality inventory)
             qualities (map :quality result)]
         qualities => (has not-any? neg?)
-        (count qualities) => 5))
+        (count qualities) => 6))
 
 (fact "sell-in decreases each day except sulfuras"
       (let [inventory (make-uniform-inventory 1 1)
@@ -34,7 +35,7 @@
             result (update-quality non-sulf-inv)
             sellins (map :sell-in result)]
         sellins => (has every? zero?)
-        (count sellins) => 4))
+        (count sellins) => 5))
 
 (fact "sulfuras "
       (let [sulfuras (item sulfuras-name 0 80)
@@ -91,4 +92,4 @@
             result (update-quality non-sulf-inv)
             qualities (map :quality result)]
         qualities => (has every? (fn [x] (>= 50 x)))
-        (count qualities) => 4))
+        (count qualities) => 5))
