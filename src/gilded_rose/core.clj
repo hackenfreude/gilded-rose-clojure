@@ -16,12 +16,10 @@
       (< (:sell-in item) 0)
         (if (= "Backstage passes to a TAFKAL80ETC concert" (:name item))
           (merge item {:quality 0})
-          (if (or (= "+5 Dexterity Vest" (:name item)) (= "Elixir of the Mongoose" (:name item)))
-            (merge item {:quality (- (:quality item) 2)})
-            item))
-      (or (= "+5 Dexterity Vest" (:name item)) (= "Elixir of the Mongoose" (:name item)))
-        (merge item {:quality (dec (:quality item))})
-      :else item))
+           item)
+      (= "Sulfuras, Hand of Ragnaros" (:name item))
+         item
+      :else (merge item {:quality (dec (:quality item))})))
   (map (fn [item]
       (if (not= "Sulfuras, Hand of Ragnaros" (:name item))
         (merge item {:sell-in (dec (:sell-in item))})
